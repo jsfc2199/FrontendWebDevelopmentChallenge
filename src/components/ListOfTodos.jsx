@@ -10,7 +10,6 @@ const ListOfToDo = () => {
 
         let listOfTodos = fetchAllNotes().then(
             (todos) => {
-                //console.log(todos)
                 let action = {
                     type: 'get-todos',
                     payload: todos
@@ -26,6 +25,33 @@ const ListOfToDo = () => {
         return data
     }
 
+
+    //delete to-do
+    const onDelete = async (todo) =>{
+
+        let response = await fetch(`http://localhost:8081/api/delete/todo`,
+        {
+            method: 'DELETE',
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify(todo)
+        })
+
+        let todoDeleted = await response
+        
+        if(todoDeleted.status===200){
+ 
+            dispatch({
+                type: 'remove-todo',
+                payload: todo
+            })
+        }else{
+            console.log("We couldn't delete the to-do")
+        }
+        
+    }
+
     return (
         <div >
             <h1>To-Do List Track</h1>
@@ -38,6 +64,7 @@ const ListOfToDo = () => {
                                 <td> <h3>{todo.name}</h3></td>
                                 <td> <input className='filtergames' type='text' placeholder='Add task' /></td>
                                 <td> <button className="btn"> Add Task </button></td>
+                                <td> <button className="btn" onClick={() => onDelete(todo)}> Delete TO-DO </button></td>
                             </tr>
                             <tr className="justTableHead">
                                 <td>Id</td>

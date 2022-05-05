@@ -1,13 +1,10 @@
 function reducer(state, action) {
 
-    switch (action.type) {
-        //create the escenario get-notes
+    switch (action.type) { 
         case 'get-todos':
-            //we grab the payload c
             const stateWithAllTheTodos = {
-                ...state, //we get the previous state the we had
-                listOfTodos: action.payload //replacing the listOfNotes for the one in the payload
-                //which mean it is going to use the list the we get from the http request
+                ...state, 
+                listOfTodos: action.payload
             }
             return stateWithAllTheTodos
 
@@ -19,8 +16,11 @@ function reducer(state, action) {
             }
             return stateWithNewGameAdded
 
-        case 'remove-note':
-            return state
+        case 'remove-todo':
+            const newlistOfNotesWithOutPayloadGame =
+                state.listOfTodos.filter(todo => todo.id !== action.payload.id)
+            const newStateWithoutNoteDeleted = { ...state, listOfTodos: newlistOfNotesWithOutPayloadGame }
+            return newStateWithoutNoteDeleted
 
         case 'update-note':
             return state
