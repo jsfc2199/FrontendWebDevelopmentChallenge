@@ -11,9 +11,13 @@ function reducer(state, action) {
             }
             return stateWithAllTheTodos
 
-        case 'add-note':
-            
-            return state
+        case 'add-category':
+            const newGame = action.payload
+            const listStateWithNewGame=[...state.listOfTodos, newGame]
+            const stateWithNewGameAdded={
+                ...state, listOfTodos: listStateWithNewGame
+            }
+            return stateWithNewGameAdded
 
         case 'remove-note':
             return state
