@@ -7,9 +7,11 @@ function App() {
 
 
   return (
+    <div>
     <StoreProvider>
       <ListOfTodos/>
     </StoreProvider>
+    </div>
   )
 }
 

@@ -1,5 +1,6 @@
 import React, { useContext, useEffect } from 'react'
 import { Store } from '../Provider/StoreProvider'
+import { FaTimes } from 'react-icons/fa'
 
 const ListOfToDo = () => {
 
@@ -26,7 +27,7 @@ const ListOfToDo = () => {
     }
 
     return (
-        <div>
+        <div >
             <h1>To-Do List Track</h1>
             <table className="justTable">
                 {
@@ -34,20 +35,24 @@ const ListOfToDo = () => {
 
                         return <tbody className="justBody" key={todo.id} >
                             <tr >
-                                <td>{todo.name}</td>
+                                <td> <h3>{todo.name}</h3></td>
+                                <td> <input className='filtergames' type='text' placeholder='Add task' /></td>
+                                <td> <button className="btn"> Add Task </button></td>
                             </tr>
-                            <tr >
+                            <tr className="justTableHead">
                                 <td>Id</td>
                                 <td>Task</td>
                                 <td>Completed</td>
+                                <td>Delete</td>
+                                <td>Edit</td>
                             </tr>
                             {
                                 todo.listOfTasks.map(task => {
                                     return <tr key={task.id}>
                                         <td>{task.id}</td>
                                         <td>{task.todolistName}</td>
-                                        <td className="inputStyler"><input type="checkbox"/></td>
-                                        <td><button className="btn"> Delete </button></td>
+                                        <td className="inputStyler"><input type="checkbox" /></td>
+                                        <td><FaTimes style={{ color: 'red', cursor: 'pointer' }} /></td>
                                         <td><button className="btn"> Edit </button></td>
                                     </tr>
                                 })
