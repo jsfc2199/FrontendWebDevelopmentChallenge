@@ -8,8 +8,6 @@ function App() {
 
   return (
     <StoreProvider>
-      <h1>Store</h1>
-
       <ListOfTodos/>
     </StoreProvider>
   )
