@@ -35,7 +35,6 @@ function reducer(state, action) {
 
             //brings all the categories that are going to be render with the task deleted from the specific category
             const allTodosUpdatedWithoutTask = state.listOfTodos.map(todo => todo.id !== action.payload.fkTodoId ? todo : temporalStateBetweenCategoryAndTask)
-            console.log(allTodosUpdatedWithoutTask)
 
             //Update the state with all categories deleting the task that we delete
             const newStateWithoutTaskDeleted = { ...state, listOfTodos: allTodosUpdatedWithoutTask }
@@ -46,7 +45,6 @@ function reducer(state, action) {
         case 'update-task':
             //brings the category where the checkbox belongs without update it
             const newListOfCategoriesWithTaskUpdated = state.listOfTodos.find(todo => todo.id === action.payload.fkTodoId)
-            //console.log(newListOfCategoriesWithTaskUpdated)
 
             const temporalStateBetweenCheckAndUncheck = {
                 ...newListOfCategoriesWithTaskUpdated, listOfTasks: newListOfCategoriesWithTaskUpdated.listOfTasks.map(
@@ -62,7 +60,7 @@ function reducer(state, action) {
                 todo => todo.id !== action.payload.fkTodoId ? todo : temporalStateBetweenCheckAndUncheck)
 
             const stateWithCheckBoxUpdated = { ...state, listOfTodos: todoUpdatedWithCheckbox }
-            //console.log(stateWithCheckBoxUpdated)
+
             return stateWithCheckBoxUpdated
 
         case 'add-task':
