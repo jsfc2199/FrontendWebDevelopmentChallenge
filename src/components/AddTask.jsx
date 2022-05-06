@@ -50,7 +50,7 @@ const AddTask = ({todo}) => {
     <td>
       <form ref = {formRef} onSubmit={onAddTask}>
       <input className='filtergames' type='text' placeholder='Add task' onChange={addTask} />
-      <button className="btn" > Add Task </button>
+      <button className="btn" > Add Task </button>      
       </form>
     </td>
 
