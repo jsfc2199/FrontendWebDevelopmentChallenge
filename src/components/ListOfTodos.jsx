@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from 'react'
 import { Store } from '../Provider/StoreProvider'
 import { FaTimes } from 'react-icons/fa'
+import AddTask from './AddTask'
 
 const ListOfToDo = () => {
 
@@ -8,7 +9,7 @@ const ListOfToDo = () => {
 
     useEffect(() => {
 
-        let listOfTodos = fetchAllNotes().then(
+        let listOfTodos = fetchAllTodos().then(
             (todos) => {
                 let action = {
                     type: 'get-todos',
@@ -19,7 +20,7 @@ const ListOfToDo = () => {
     }, [])
 
 
-    const fetchAllNotes = async () => {
+    const fetchAllTodos = async () => {
         let response = await fetch(`http://localhost:8081/api/get/todos`)
         let data = await response.json()
         return data
@@ -27,30 +28,53 @@ const ListOfToDo = () => {
 
 
     //delete to-do
-    const onDelete = async (todo) =>{
+    const onDelete = async (todo) => {
 
         let response = await fetch(`http://localhost:8081/api/delete/todo`,
-        {
-            method: 'DELETE',
-            headers: {
-                'Content-type': 'application/json'
-            },
-            body: JSON.stringify(todo)
-        })
+            {
+                method: 'DELETE',
+                headers: {
+                    'Content-type': 'application/json'
+                },
+                body: JSON.stringify(todo)
+            })
 
         let todoDeleted = await response
-        
-        if(todoDeleted.status===200){
- 
+
+        if (todoDeleted.status === 200) {
+
             dispatch({
                 type: 'remove-todo',
                 payload: todo
             })
-        }else{
+        } else {
             console.log("We couldn't delete the to-do")
         }
-        
     }
+
+    const onDeleteTask = async (task)=>{
+        let response = await fetch(`http://localhost:8081/api/delete/task`,
+            {
+                method: 'DELETE',
+                headers: {
+                    'Content-type': 'application/json'
+                },
+                body: JSON.stringify(task)
+            })
+
+        let taskDeleted = await response
+   
+        if (taskDeleted.status === 200) {            
+            dispatch({
+                type: 'remove-task',
+                payload: task
+            })
+        } else {
+            console.log("We couldn't delete the to-do")
+        }
+    }
+
+
 
     return (
         <div >
@@ -62,8 +86,8 @@ const ListOfToDo = () => {
                         return <tbody className="justBody" key={todo.id} >
                             <tr >
                                 <td> <h3>{todo.name}</h3></td>
-                                <td> <input className='filtergames' type='text' placeholder='Add task' /></td>
-                                <td> <button className="btn"> Add Task </button></td>
+                                <td> <h3>{todo.id}</h3></td>
+                                <AddTask todo={todo} key={todo.id}/>
                                 <td> <button className="btn" onClick={() => onDelete(todo)}> Delete TO-DO </button></td>
                             </tr>
                             <tr className="justTableHead">
@@ -79,7 +103,7 @@ const ListOfToDo = () => {
                                         <td>{task.id}</td>
                                         <td>{task.todolistName}</td>
                                         <td className="inputStyler"><input type="checkbox" /></td>
-                                        <td><FaTimes style={{ color: 'red', cursor: 'pointer' }} /></td>
+                                        <td><FaTimes style={{ color: 'red', cursor: 'pointer' }} onClick={() => onDeleteTask(task)}/></td>
                                         <td><button className="btn"> Edit </button></td>
                                     </tr>
                                 })

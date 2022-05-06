@@ -6,11 +6,8 @@ const initialState = {
         id:'',
         name:'',
         listOfTasks: [],
-
     },
-    listOfTodos:[        
-        //we deleted the nothe by default cause we dont need that anymore
-    ]
+    listOfTodos:[]
 }
 
 const Store = createContext(initialState)
