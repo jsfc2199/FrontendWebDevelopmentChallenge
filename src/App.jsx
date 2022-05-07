@@ -9,10 +9,10 @@ function App() {
 
   return (
     <div>
-    <StoreProvider>
-      <Category/>
-      <ListOfTodos/>
-    </StoreProvider>
+      <StoreProvider>
+        <Category />
+        <ListOfTodos />
+      </StoreProvider>
     </div>
   )
 }

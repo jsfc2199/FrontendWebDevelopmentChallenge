@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Store } from '../Provider/StoreProvider'
 import { FaTimes } from 'react-icons/fa'
 import AddTask from './AddTask'
@@ -52,7 +52,7 @@ const ListOfToDo = () => {
         }
     }
 
-    const onDeleteTask = async (task)=>{
+    const onDeleteTask = async (task) => {
         let response = await fetch(`http://localhost:8081/api/delete/task`,
             {
                 method: 'DELETE',
@@ -63,8 +63,8 @@ const ListOfToDo = () => {
             })
 
         let taskDeleted = await response
-   
-        if (taskDeleted.status === 200) {            
+
+        if (taskDeleted.status === 200) {
             dispatch({
                 type: 'remove-task',
                 payload: task
@@ -75,18 +75,18 @@ const ListOfToDo = () => {
     }
 
 
-    const onCheckBox = async(event, task)=>{
+    const onCheckBox = async (event, task) => {
         const checked = event.currentTarget.checked;
-        let noteWithCheckBoxInfo = {...task, completed: checked}
+        let noteWithCheckBoxInfo = { ...task, completed: checked }
 
         let taskUpdatedPromise = await fetch(`http://localhost:8081/api/update/task`,
-        {
-            method: 'PUT',
-            headers: {
-                'Content-type': 'application/json'
-            },
-            body: JSON.stringify(noteWithCheckBoxInfo)
-        })
+            {
+                method: 'PUT',
+                headers: {
+                    'Content-type': 'application/json'
+                },
+                body: JSON.stringify(noteWithCheckBoxInfo)
+            })
 
         let taskUpdated = await taskUpdatedPromise.json()
 
@@ -95,6 +95,14 @@ const ListOfToDo = () => {
             payload: taskUpdated
         })
     }
+
+    const [update, setUpdate] = useState(false)
+    const [taskObject, setTaskobject] = useState('')
+    
+    const onClickEdit = async (task) => {        
+        setUpdate(true)        
+        setTaskobject(task)
+    }    
 
     return (
         <div >
@@ -105,9 +113,8 @@ const ListOfToDo = () => {
 
                         return <tbody className="justBody" key={todo.id} >
                             <tr >
-                                <td> <h3>{todo.name}</h3></td>
-                                <td> <h3>{todo.id}</h3></td>
-                                <AddTask todo={todo} key={todo.id}/>
+                                <td> <h3>{todo.name}</h3></td>                                
+                                <AddTask todo={todo} key={todo.id} update={update} taskObject = {taskObject} setUpdated ={setUpdate} />
                                 <td> <button className="btn" onClick={() => onDelete(todo)}> Delete TO-DO </button></td>
                             </tr>
                             <tr className="justTableHead">
@@ -120,11 +127,11 @@ const ListOfToDo = () => {
                             {
                                 todo.listOfTasks.map(task => {
                                     return <tr key={task.id}>
-                                        <td style={task.completed?{textDecoration:'line-through'}:{}}>{task.id}</td>
-                                        <td style={task.completed?{textDecoration:'line-through'}:{}}>{task.todolistName}</td>
-                                        <td className="inputStyler"><input type="checkbox" checked = {task.completed} onChange={(event) => onCheckBox(event, task)}/></td>
-                                        <td><FaTimes style={{ color: 'red', cursor: 'pointer' }} onClick={() => onDeleteTask(task)}/></td>
-                                        <td><button disabled = {task.completed}> Edit </button></td>
+                                        <td style={task.completed ? { textDecoration: 'line-through' } : {}}>{task.id}</td>
+                                        <td style={task.completed ? { textDecoration: 'line-through' } : {}}>{task.todolistName}</td>
+                                        <td className="inputStyler"><input type="checkbox" checked={task.completed} onChange={(event) => onCheckBox(event, task)} /></td>
+                                        <td><FaTimes style={{ color: 'red', cursor: 'pointer' }} onClick={() => onDeleteTask(task)} /></td>
+                                        <td><button className="btn" disabled={task.completed} onClick={() => onClickEdit(task)}> Edit </button></td>
                                     </tr>
                                 })
                             }
